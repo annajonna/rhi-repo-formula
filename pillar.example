@@ -1,18 +1,18 @@
-rhi-repo:
+rhirepo:
   lookup:
     # URL to the RHI RPM to install
-    rpm: default varies with OS; see rhi-repo/init.sls
+    rpm: default varies with OS; see rhirepo/init.sls
 
     # URL to the RHI GPG key
-    key: default varies with OS; see rhi-repo/map.jinja
-    key_hash: default varies with OS; see rhi-repo/map.jinja
+    key: default varies with OS; see rhirepo/map.jinja
+    key_hash: default varies with OS; see rhirepo/map.jinja
 
     # filename for the local RHI Key
-    key_name: default varies with OS; see rhi-repo/map.jinja
+    key_name: default varies with OS; see rhirepo/map.jinja
 
     # Disable repo so requires the --enablerepo flag to use
-    enabled: ['rhi-repo']
-    disabled: ['rhi-repo-debuginfo', 'rhi-repo-source']
+    enabled: ['rhirepo']
+    disabled: ['rhirepo-debuginfo', 'rhirepo-source']
     testing: true
-    testing_enabled: ['rhi-repo-testing']
-    testing_disabled: ['rhi-repo-testing-debuginfo', 'rhi-repo-testing-source']
+    testing_enabled: ['rhirepo-testing']
+    testing_disabled: ['rhirepo-testing-debuginfo', 'rhirepo-testing-source']

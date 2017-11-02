@@ -1,39 +1,39 @@
 # Completely ignore non-RHEL based systems
 {% if salt['grains.get']('os_family') == 'RedHat' %}
-{% from "rhi-repo/map.jinja" import rhi-repo with context %}
+{% from "rhirepo/map.jinja" import rhirepo with context %}
 
-install_pubkey_rhi-repo:
+install_pubkey_rhirepo:
   file.managed:
-    - name: /etc/pki/rpm-gpg/{{ rhi-repo.key_name }}
-    - source: {{ rhi-repo.key }}
-    - source_hash:  {{ rhi-repo.key_hash }}
+    - name: /etc/pki/rpm-gpg/{{ rhirepo.key_name }}
+    - source: {{ rhirepo.key }}
+    - source_hash:  {{ rhirepo.key_hash }}
 
-rhi-repo_release:
+rhirepo_release:
   pkg.installed:
     - sources:
-      - rhi-repo-release: {{ rhi-repo.rpm }}
+      - rhirepo-release: {{ rhirepo.rpm }}
 #    - require:
-#      - file: install_pubkey_rhi-repo
+#      - file: install_pubkey_rhirepo
 
-set_pubkey_rhi-repo:
+set_pubkey_rhirepo:
   file.replace:
     - append_if_not_found: True
     - name: /etc/yum.repos.d/rhi.repo
     - pattern: '^\s*gpgkey=.*'
-    - repl: 'gpgkey=file:///etc/pki/rpm-gpg/{{ rhi-repo.key_name }}'
+    - repl: 'gpgkey=file:///etc/pki/rpm-gpg/{{ rhirepo.key_name }}'
     - require:
-      - pkg: rhi-repo_release
+      - pkg: rhirepo_release
 
-set_gpg_rhi-repo:
+set_gpg_rhirepo:
   file.replace:
     - append_if_not_found: True
     - name: /etc/yum.repos.d/rhi.repo
     - pattern: '^\s*gpgcheck=.*'
     - repl: 'gpgcheck=1'
     - require:
-      - pkg: rhi-repo_release
+      - pkg: rhirepo_release
 
-{%   for entry in rhi-repo.disabled %}
+{%   for entry in rhirepo.disabled %}
 disable_{{ entry }}:
   file.replace:
     - name: /etc/yum.repos.d/rhi.repo
@@ -41,7 +41,7 @@ disable_{{ entry }}:
     - repl: '[{{ entry }}]\1enabled=0'
     - flags: ['DOTALL']
 {%   endfor %}
-{%   for entry in rhi-repo.enabled %}
+{%   for entry in rhirepo.enabled %}
 enable_{{ entry }}:
   file.replace:
     - name: /etc/yum.repos.d/rhi.repo
@@ -50,19 +50,19 @@ enable_{{ entry }}:
     - flags: ['DOTALL']
 {%   endfor %}
 
-{%   if rhi-repo.testing %}
-{%     for entry in rhi-repo.testing_disabled %}
+{%   if rhirepo.testing %}
+{%     for entry in rhirepo.testing_disabled %}
 disable_{{ entry }}:
   file.replace:
-    - name: /etc/yum.repos.d/rhi-repo-testing.repo
+    - name: /etc/yum.repos.d/rhirepo-testing.repo
     - pattern: '\[{{ entry }}\](.*?)enabled=[01]'
     - repl: '[{{ entry }}]\1enabled=0'
     - flags: ['DOTALL']
 {%     endfor %}
-{%     for entry in rhi-repo.testing_enabled %}
+{%     for entry in rhirepo.testing_enabled %}
 enable_{{ entry }}:
   file.replace:
-    - name: /etc/yum.repos.d/rhi-repo-testing.repo
+    - name: /etc/yum.repos.d/rhirepo-testing.repo
     - pattern: '\[{{ entry }}\](.*?)enabled=[01]'
     - repl: '[{{ entry }}]\1enabled=1'
     - flags: ['DOTALL']

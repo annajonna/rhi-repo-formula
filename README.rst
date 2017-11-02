@@ -1,4 +1,4 @@
-rhi-repo
+rhirepo
 ====
 
 Install the RHI RPM and GPG key on RHEL 5/6/7, CentOS 5/6/7, Amazon Linux, or
@@ -15,7 +15,7 @@ Available states
 .. contents::
     :local:
 
-``rhi-repo``
+``rhirepo``
 --------
 
 Installs the GPG key and RHI RPM package for the current OS.
