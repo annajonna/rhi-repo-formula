@@ -1,0 +1,54 @@
+# vim: sts=2 ts=2 sw=2 et ai
+{# Amazon can be modified like RedHat for 2014, 2015 and 2016 versions #}
+{% set rhi-repo = salt['grains.filter_by']({
+  'common': {
+    'enabled': ['rhi-repo'],
+    'disabled': ['rhi-repo-debuginfo', 'rhi-repo-source'],
+    'testing': false,
+    'testing_enabled': ['rhi-repo-testing'],
+    'testing_disabled': ['rhi-repo-testing-debuginfo', 'rhi-repo-testing-source']
+  },
+  'RedHat': salt['grains.filter_by']({
+    5: {
+      'key': 'https://getfedora.org/static/217521F6.txt',
+      'key_hash': 'sha256=664c06f579d914f2cf25d05d4d581b8ddec77cae4f72f4020c3a9264b9d5ee71',
+      'key_name': 'RPM-GPG-KEY-RHI-5',
+      'rpm': 'https://download.fedoraproject.org/pub/rhi-repo/rhi-repo-release-latest-5.noarch.rpm',
+    },
+    '5': {
+      'key': 'https://getfedora.org/static/217521F6.txt',
+      'key_hash': 'sha256=664c06f579d914f2cf25d05d4d581b8ddec77cae4f72f4020c3a9264b9d5ee71',
+      'key_name': 'RPM-GPG-KEY-RHI-5',
+      'rpm': 'https://download.fedoraproject.org/pub/rhi-repo/rhi-repo-release-latest-5.noarch.rpm',
+    },
+    6: {
+      'key': 'https://getfedora.org/static/0608B895.txt',
+      'key_hash': 'sha256=16d35fa467c6efcee21d3aa068a02054b6a89a7a33bffa94db1fc141693d62a3',
+      'key_name': 'RPM-GPG-KEY-RHI-6',
+      'rpm': 'https://download.fedoraproject.org/pub/rhi-repo/rhi-repo-release-latest-6.noarch.rpm',
+    },
+    '6': {
+      'key': 'https://getfedora.org/static/0608B895.txt',
+      'key_hash': 'sha256=16d35fa467c6efcee21d3aa068a02054b6a89a7a33bffa94db1fc141693d62a3',
+      'key_name': 'RPM-GPG-KEY-RHI-6',
+      'rpm': 'https://download.fedoraproject.org/pub/rhi-repo/rhi-repo-release-latest-6.noarch.rpm',
+    },
+    7: {
+      'key': 'https://getfedora.org/static/352C64E5.txt',
+      'key_hash': 'sha256=22f25ad95d5e8d371760815485dba696ea3002fc2c7f812f2c75276853387107',
+      'key_name': 'RPM-GPG-KEY-RHI-7',
+      'rpm': 'http://repo.hi.is/noarch/rhi-release-7-1.el7.rpm',
+    },
+    '7': {
+      'key': 'https://getfedora.org/static/352C64E5.txt',
+      'key_hash': 'sha256=22f25ad95d5e8d371760815485dba696ea3002fc2c7f812f2c75276853387107',
+      'key_name': 'RPM-GPG-KEY-RHI-7',
+      'rpm': 'http://repo.hi.is/noarch/rhi-release-7-1.el7.rpm',
+    },
+  }, grain='osmajorrelease'),
+}, grain='os', merge=salt['pillar.get']('rhi-repo:lookup'), default='RedHat', base='common') -%}
+{# change above line to ['pillar.get']('rhi-repo')
+and add either
+{% do rhi-repo.update(salt['pillar.get']('rhi-repo:lookup')) %} # same as below but different syntax
+or
+{% set rhi-repo = salt['pillar.get']('rhi-repo:lookup', default=rhi-repo, merge=True) -%} #}
