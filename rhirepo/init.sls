@@ -11,9 +11,9 @@ install_pubkey_rhirepo:
 rhirepo_release:
   pkg.installed:
     - sources:
-      - rhirepo-release: {{ rhirepo.rpm }}
-#    - require:
-#      - file: install_pubkey_rhirepo
+      - rhi-release: {{ rhirepo.rpm }}
+    - require:
+      - file: install_pubkey_rhirepo
 
 set_pubkey_rhirepo:
   file.replace:
@@ -29,7 +29,7 @@ set_gpg_rhirepo:
     - append_if_not_found: True
     - name: /etc/yum.repos.d/rhi.repo
     - pattern: '^\s*gpgcheck=.*'
-    - repl: 'gpgcheck=1'
+    - repl: 'gpgcheck=0'
     - require:
       - pkg: rhirepo_release
 
